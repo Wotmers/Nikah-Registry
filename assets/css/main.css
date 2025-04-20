@@ -4088,6 +4088,44 @@
 
 		}
 
+
+
+		#banner {
+			background-image: url('images/banner.jpg'); /* Replace with the actual image URL */
+			background-size: cover; /* Ensures the image covers the entire section */
+			background-position: center top; /* Focus on the top part of the image (where the faces likely are) */
+			background-repeat: no-repeat;
+			min-height: 80vh; /* Increased height to 80% of the viewport height */
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			color: white; /* Text color */
+			padding: 2rem; /* Add some padding for better spacing */
+			position: relative; /* Ensures text and icons are placed above the image */
+		  }
+		  
+		  /* Ensures the icon and text are above the background image */
+		  #banner h3, #banner h4 {
+			z-index: 1; /* Keeps the text on top */
+		  }
+		  
+		  #banner .icon {
+			font-size: 4rem; /* Adjust icon size as needed */
+			z-index: 1; /* Keeps the icon above the background */
+		  }
+		  
+		  
+		  
+		  
+
+
+
+
+
+
+
 /* Main */
 
 	#main {

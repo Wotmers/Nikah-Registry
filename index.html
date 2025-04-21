@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Nikah Ceremony</title>
-
+ <title>
+Nikah Ceremony
+</title> 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="assets/css/main.css" />
@@ -241,10 +242,71 @@
 
     document.getElementById('paymentForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      alert("Payment processing... (connect to Paystack here)");
+      alert("Payment processing... ");
       document.getElementById('paymentModal').style.display = 'none';
     });
   </script>
+
+<!-- Paystack Script -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+  // Helper to extract numeric amount from string
+  function getAmountFromGiftName(name) {
+    const giftCards = document.querySelectorAll('.gift-card');
+    for (let card of giftCards) {
+      if (card.querySelector('h4').innerText === name) {
+        const priceText = card.querySelector('p strong').nextSibling.textContent;
+        const price = priceText.replace(/[^\d.]/g, '');
+        return Math.floor(parseFloat(price));
+      }
+    }
+    return 0;
+  }
+
+  // Event listener for Paystack payment
+  document.getElementById('paymentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = this.querySelector('input[type="text"]').value;
+    const email = this.querySelector('input[type="email"]').value;
+    const giftName = document.getElementById('selectedGiftName').innerText;
+    const amount = getAmountFromGiftName(giftName) * 100; // Convert to Kobo
+
+    let handler = PaystackPop.setup({
+      key: 'pk_test_0886b13c7d4ccd7a578e60ca711191acb38f4dfa',
+      email: email,
+      amount: amount,
+      currency: 'NGN',
+      metadata: {
+        custom_fields: [
+          {
+            display_name: "Full Name",
+            variable_name: "full_name",
+            value: name
+          },
+          {
+            display_name: "Gift",
+            variable_name: "gift_item",
+            value: giftName
+          }
+        ]
+      },
+      callback: function(response) {
+        alert("Payment complete! Reference: " + response.reference);
+        document.getElementById('paymentModal').style.display = 'none';
+
+        // Optional: Update UI or send confirmation
+      },
+      onClose: function() {
+        alert('Payment cancelled');
+      }
+    });
+
+    handler.openIframe();
+  });
+</script>
+
+
 </body>
 </html>
 
